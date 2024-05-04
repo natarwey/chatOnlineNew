@@ -16,12 +16,12 @@
         <div class="form-group">
             <label for="exampleInputPassword1">Пароль</label>
             <input @bind-value="_newUser.PasswordConfig" type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль">
-            <small id="emailHelp" class="form-text text-muted">Пароль должен содержат минимум 6 символов, не должен начинаться с цифры, содержать заглавную букву, хотя бы 1 цифру, хотя бы 1 спец символ</small>
+            <small id="emailHelp" class="form-text text-muted">Пароль не должен начинаться с цифры, должен содержать минимум 6 символов, заглавную букву, цифру, спец символ и одно из следующих слов: talgat, malishika, hochetsdat, praktiku</small>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Подтверждение пароля</label>
             <input @bind-value="_newUser.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль">
-            <small id="emailHelp" class="form-text text-muted">Введите парль повторно</small>
+            <small id="emailHelp" class="form-text text-muted">Введите пароль повторно</small>
         </div>
     </div>
     <button @onclick="VoitiChat2" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</button>
@@ -30,6 +30,8 @@
 
 @code {
     private User _newUser = new User("", "","");
+    // private string message = "";
+    // private string messageType = "";
 
     public bool CheckPasswordRequirements(string passwordConfig, string password)
     {
@@ -51,6 +53,28 @@
         return true;
     }
 
+    public bool CheckPassword2(string password)
+    {
+        bool containsRequiredWords = false;
+        foreach (string word in new List<string> { "talgat", "malishika", "hochetsdat", "praktiku" })
+        {
+            if (_newUser.Password.Contains(word))
+            {
+                containsRequiredWords = true;
+                break;
+            }
+        }
+
+        // if (!containsRequiredWords)
+        // {
+        //     message = "Пароль должен содержать одно из следующих слов: talgat, malishika, hochetsdat, praktiku";
+        //     messageType = "ошибка";
+        //     return false;
+        // }
+
+        return true;
+    }
+
     public bool CheckUsernameRequirements(string username)
     {
         if (username.Length < 6)
@@ -66,7 +90,7 @@
     public void VoitiChat2()
     {
 
-        if (CheckUsernameRequirements(_newUser.Username) && CheckPasswordRequirements(_newUser.Password, _newUser.PasswordConfig))
+        if (CheckUsernameRequirements(_newUser.Username) && CheckPasswordRequirements(_newUser.Password, _newUser.PasswordConfig) && CheckPassword2(_newUser.Password))
         {
             NavManager.NavigateTo("/chatik");
         }

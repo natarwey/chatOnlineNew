@@ -6,6 +6,46 @@
 
 <h3>Chatik</h3>
 
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Поиск пользователя</h5>
+                    <div class="form-group">
+                        <input @bind="searchQuery" type="text" class="form-control" placeholder="Search users...">
+                    </div>
+                    <ul class="list-group">
+                        @foreach (var user in filteredUsers)
+                        {
+                            <li @onclick="() => SelectUser(user)" class="list-group-item">@user.Username</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @code {
+    private List<User> users = new List<User>
+    {
+        new User("Serkan Bolat","",""),
+        new User("Harry Potter","",""),
+        new User("Luntik","",""),
+    };
+
+    private User selectedUser;
+    private string searchQuery = "";
+    private string newMessage = "";
+
+    private List<User> filteredUsers => string.IsNullOrEmpty(searchQuery) ? users : users.Where(u => u.Username.StartsWith(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+    
+    private void SelectUser(User user)
+    {
+        selectedUser = user;
+    }
 
 }
