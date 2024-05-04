@@ -1,0 +1,87 @@
+﻿@page "/vvoiti"
+@inject NavigationManager NavManager
+@using chatOnline.Data
+@using chatOnline.Services
+@inject DataContext DataContext
+@inject UserContext UserContext
+<h3>Форма входа</h3>
+
+<div class="card" style="width: 100vw; margin-top: 3rem;">
+    <div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Электронная почта</label>
+            <input @bind-value="_newUser.Username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Имя пользователя">
+            <small id="emailHelp" class="form-text text-muted">Имя пользователя должно содержать цифры 0-9 и заглавные, прописные буквы</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Пароль</label>
+            <input @bind-value="_newUser.Password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль">
+            <small id="emailHelp" class="form-text text-muted">Пароль должен содержат минимум 6 символов, не должен начинаться с цифры, содержать заглавную букву, хотя бы 1 цифру, хотя бы 1 спец символ</small>
+        </div>
+    </div>
+    <a @onclick="VoitiChat" href="#" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</a>
+
+</div>
+
+
+@code {
+    private User _newUser = new User("", "");
+    class User
+    {
+        public User(string username, string password)
+        {
+            Id = Guid.NewGuid().ToString();
+            Username = username;
+            Password = password;
+        }
+
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+    
+        public bool CheckPasswordRequirements(string password)
+        {
+            if (password.Length != 6)
+                return false;
+
+            if (!password.Any(char.IsUpper))
+                return false;
+
+            if (!password.Any(char.IsDigit))
+                return false;
+
+            if (!password.Any(c => !char.IsLetterOrDigit(c)))
+                return false;
+
+            return true;
+        }
+
+        public bool CheckUsernameRequirements(string username)
+        {
+            if (username.Length != 6)
+                return false;
+
+            if (char.IsDigit(username[0]))
+                return false;
+
+            return true;
+        }
+        string newUsername = "User01";
+
+        //if (password=cu)
+        //{
+        //    // Имя пользователя соответствует требованиям
+        //}
+        //else
+        //{
+        //    // Имя пользователя не соответствует требованиям
+        //}
+    }
+        
+    
+
+    public void VoitiChat()
+    {
+        NavManager.NavigateTo("/chatik");
+    }
+}

@@ -1,0 +1,31 @@
+﻿@page "/"
+@inject NavigationManager NavManager
+
+<PageTitle>chat.online</PageTitle>
+
+<div class="card" style="width: 100vw; margin-top: 1rem">
+    <img class="card-img-top" src="https://ne-kurim.ru/forum/attachments/1-jpg.840971/" alt="Card image cap">
+    <div class="card-body">
+        <div class="d-flex flex-row" style="align: center; justify-content: center ">
+        <a @onclick="Voiti" href="#" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</a>
+        <a @onclick="Registr" href="#" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none">Зарегестрироваться</a>
+      </div>  
+
+   </div>
+</div>
+
+
+
+@code {
+
+
+    public void Voiti()
+    {
+        NavManager.NavigateTo("/vvoiti");
+    }
+
+    public void Registr()
+    {
+        NavManager.NavigateTo("/rregistr");
+    }
+}
