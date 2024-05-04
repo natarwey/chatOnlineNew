@@ -19,29 +19,17 @@
             <small id="emailHelp" class="form-text text-muted">Пароль должен содержат минимум 6 символов, не должен начинаться с цифры, содержать заглавную букву, хотя бы 1 цифру, хотя бы 1 спец символ</small>
         </div>
     </div>
-    <a @onclick="VoitiChat" href="#" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</a>
+    <button @onclick="VoitiChat" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</button>
 
 </div>
 
 
 @code {
-    private User _newUser = new User("", "");
-    class User
-    {
-        public User(string username, string password)
-        {
-            Id = Guid.NewGuid().ToString();
-            Username = username;
-            Password = password;
-        }
-
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+    private User _newUser = new User("", "", "");
     
         public bool CheckPasswordRequirements(string password)
         {
-            if (password.Length != 6)
+            if (password.Length <= 6)
                 return false;
 
             if (!password.Any(char.IsUpper))
@@ -58,7 +46,7 @@
 
         public bool CheckUsernameRequirements(string username)
         {
-            if (username.Length != 6)
+            if (username.Length < 6)
                 return false;
 
             if (char.IsDigit(username[0]))
@@ -66,22 +54,13 @@
 
             return true;
         }
-        string newUsername = "User01";
 
-        //if (password=cu)
-        //{
-        //    // Имя пользователя соответствует требованиям
-        //}
-        //else
-        //{
-        //    // Имя пользователя не соответствует требованиям
-        //}
-    }
-        
-    
 
     public void VoitiChat()
     {
-        NavManager.NavigateTo("/chatik");
+        if (CheckUsernameRequirements(_newUser.Username) && CheckPasswordRequirements(_newUser.Password))
+        {
+            NavManager.NavigateTo("/chatik");
+        }
     }
 }
