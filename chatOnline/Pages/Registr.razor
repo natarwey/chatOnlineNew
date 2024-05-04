@@ -24,13 +24,13 @@
             <small id="emailHelp" class="form-text text-muted">Введите парль повторно</small>
         </div>
     </div>
-    <a @onclick="VoitiChat2" href="#" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</a>
+    <button @onclick="VoitiChat2" class="btn btn-primary" style="background-color: lightpink ; color: black; border:none ; margin-right:50px">Войти</button>
 
 </div>
 
 @code {
     private User _newUser = new User("", "","");
-   
+
     public bool CheckPasswordRequirements(string passwordConfig, string password)
     {
         if (passwordConfig.Length <= 6)
@@ -50,15 +50,10 @@
 
         return true;
     }
-    public bool Proverka()
-    {
-        CheckPasswordRequirements("", "");
-        return true;
-    }
 
     public bool CheckUsernameRequirements(string username)
     {
-        if (username.Length <= 6)
+        if (username.Length < 6)
             return false;
 
         if (char.IsDigit(username[0]))
@@ -70,7 +65,12 @@
 
     public void VoitiChat2()
     {
-        NavManager.NavigateTo("/chatik");
+
+        if (CheckUsernameRequirements(_newUser.Username) && CheckPasswordRequirements(_newUser.Password, _newUser.PasswordConfig))
+        {
+            NavManager.NavigateTo("/chatik");
+        }
+
     }
 }
 
